@@ -1,0 +1,74 @@
+{
+  "schema_version": "phase1b-stage6a-experiment-manifest-v1",
+  "status": "prepared_not_executed",
+  "created_date": "2026-09-23",
+  "experiment_name": "mindboggle101_3d_unet_baseline_v1",
+  "code_version": {
+    "git_commit": "9a30f987dc857f83fb070a1a6849e5f4477c46a6",
+    "code_hashes": {
+      "src/brain_segmentation/model.py": "d58b082b7dabc1f0f6b1db5a5e6929c09679931761629ffd5d62e7da615655f1",
+      "src/brain_segmentation/losses.py": "d75e1806891f1e45eaf8d33a997667255ac60d2b1210167e8272dc9af8613f9d",
+      "src/brain_segmentation/datasets.py": "1e739bf407dd05f27e6508ece334c4b96f6dd13775c13fb390d4739c61513f61",
+      "src/brain_segmentation/dataloader.py": "e63a42cb7b90a5ef552f3240bca951e4f5677740de0d31a0aed0f471f2bbad72",
+      "src/brain_segmentation/training.py": "cdad8be60e8b3a01b6d3ddb3e245bcea431722cca307cc49748fa013527bb9ee"
+    }
+  },
+  "artifact_hashes": {
+    "dataset_manifest": {
+      "path": "data/derived/manifests/mindboggle101_scan_manifest.csv",
+      "sha256": "cc6ffbbf27552f5d74691ab32bb65f52e7aedff9ae8e4ac7721628837ceb80e9"
+    },
+    "split_config": {
+      "path": "data/derived/splits/mindboggle101_split_config.json",
+      "sha256": "37ec3a960356a8343297610fb30b2efc28ab99efb257211908cef808f3b3ded1"
+    },
+    "pair_split": {
+      "path": "data/derived/splits/mindboggle101_pair_splits.csv",
+      "sha256": "9263804d70e97fc1a956a0fe9df34a8a9fa647ccac975d93887dfad9dc54c8d1"
+    },
+    "preprocessing_config": {
+      "path": "data/derived/config/mindboggle101_preprocessing_config.json",
+      "sha256": "a23630fc007abbbf3e91437fe12dac398a59f8e1417a8d303264d4b027b67506"
+    },
+    "patch_sampling_config": {
+      "path": "data/derived/config/mindboggle101_patch_sampling_config.json",
+      "sha256": "51f89ff6cafb4b00907b7d4ca358f0179605199bbdfd1450d57dfe544f321b91"
+    },
+    "augmentation_config": {
+      "path": "data/derived/config/mindboggle101_augmentation_config.json",
+      "sha256": "8bdf65b2a2008cac78851ca3860d6261c851f3b371a56e336ee8acdec320031a"
+    },
+    "model_config": {
+      "path": "data/derived/config/mindboggle101_model_config.json",
+      "sha256": "f8604408ba3a4de645c801cc344221d63a5d7b6312c9d40dabcb21f090224f0d"
+    },
+    "loss_config": {
+      "path": "data/derived/config/mindboggle101_loss_config.json",
+      "sha256": "54b0773ba347d86d17fd9965e6a648488b2c1ad760d49b5da6960410cd0887c5"
+    },
+    "class_mapping": {
+      "path": "data/derived/dictionaries/dkt_training_class_mapping_proposal.csv",
+      "sha256": "77298b98af0d9d2bc03fee63c1d67e8ee69acbf5c2f41ebd872fa221c6b4671c"
+    }
+  },
+  "environment": {
+    "python": "3.12.10",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.6.0+cpu",
+    "cuda_available": false,
+    "monai": "1.4.0",
+    "numpy": "1.26.4",
+    "nibabel": "5.3.2",
+    "scipy": "1.14.1",
+    "pandas": "2.2.3",
+    "scikit_image": "0.24.0"
+  },
+  "execution_status": {
+    "full_training_started": false,
+    "validation_run": false,
+    "inference_run": false,
+    "test_voxel_data_accessed": false,
+    "predictions_generated": false,
+    "checkpoints_generated_by_stage6a": false
+  }
+}

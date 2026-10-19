@@ -1,0 +1,170 @@
+{
+  "accepted_artifact_hashes": {
+    "data\\derived\\dictionaries\\dkt_training_class_mapping_proposal.csv": "77298b98af0d9d2bc03fee63c1d67e8ee69acbf5c2f41ebd872fa221c6b4671c",
+    "data\\derived\\manifests\\mindboggle101_scan_manifest.csv": "cc6ffbbf27552f5d74691ab32bb65f52e7aedff9ae8e4ac7721628837ceb80e9",
+    "data\\derived\\qc\\mindboggle101_training_readiness.csv": "38f963cf186f5b887d12cfeb19b54ef81e6b1f14d44671e99f18d94195d1df98",
+    "data\\derived\\splits\\mindboggle101_pair_splits.csv": "9263804d70e97fc1a956a0fe9df34a8a9fa647ccac975d93887dfad9dc54c8d1",
+    "data\\derived\\splits\\mindboggle101_participant_group_splits.csv": "56adaec9ee86100608b9c7c01be3aaaaa1ae0f81fc239c67a201d75558d79899",
+    "data\\derived\\splits\\mindboggle101_split_config.json": "37ec3a960356a8343297610fb30b2efc28ab99efb257211908cef808f3b3ded1",
+    "data\\derived\\splits\\mindboggle101_subject_splits.csv": "912dbbd48c269d47cb2795322537f973aebd9e611607e70ee60109d3614f8339",
+    "reports\\phase1b\\mindboggle101_modeling_design_proposal.md": "30d759fe7bc54f61049d8f311325bc15c9af44b8387e1cdeae6fdeaecf610a30",
+    "reports\\phase1b\\mindboggle101_split_report.md": "c3f53f6d42e5e740c62abd9104a2bfc846eaf3e031f06011aa236440c97e6031"
+  },
+  "approved_training_space": "MNI152",
+  "augmentation_policy": "Outside deterministic preprocessing; propose later as a training-stage decision only.",
+  "foreground_definition_analysis": {
+    "combined_or_label_bounding_box": "Rejected for deterministic baseline preprocessing because it depends on manual labels unless reproduced from MRI alone.",
+    "manual_segmentation_foreground_mask": "Useful for training audit/sampling labels only; rejected as inference-time crop requirement.",
+    "nonzero_mri_mask": "Available at inference and suitable for nonzero normalization/candidate MRI-derived crop."
+  },
+  "implementation_test_matrix": [
+    "valid preprocessing",
+    "determinism",
+    "source immutability",
+    "normalization correctness",
+    "label remapping round trip",
+    "unknown label rejection",
+    "shape/affine mismatch rejection",
+    "split enforcement",
+    "training-only fitted-statistic enforcement",
+    "crop/pad reversal",
+    "absence of leakage"
+  ],
+  "input_scope": "101 accepted MNI152 MRI/manual-DKT31 pairs only",
+  "invariant_scientific_checks": [
+    "input pair remains verified",
+    "source hashes remain unchanged",
+    "output MRI and label shapes match",
+    "spatial correspondence is preserved",
+    "labels remain categorical",
+    "label remapping is reversible",
+    "no unknown class is introduced",
+    "no validation/test information influences fitted training parameters",
+    "frozen split assignments remain unchanged"
+  ],
+  "label_mapping_contract": {
+    "mapping_reference": "data\\derived\\dictionaries\\dkt_training_class_mapping_proposal.csv",
+    "prediction_to_source": "Map contiguous predictions back to original DKT IDs for evaluation and visualization.",
+    "source_to_training": "Map original DKT IDs to contiguous classes 0-62 during tensor creation.",
+    "unknown_id_policy": "Fail immediately; never silently map unknown IDs."
+  },
+  "local_compute_feasibility": {
+    "cpu_validation": "Feasible for read-only loading, normalization smoke tests, label remapping tests and small-batch preprocessing validation.",
+    "known_environment": "Windows 11, Intel i7-1165G7, about 31.7 GiB RAM, no NVIDIA GPU detected, PyTorch/MONAI/nnU-Net not installed.",
+    "training": "Practical 3D training likely requires GPU access; local CPU can support reduced-model experiments only."
+  },
+  "loss_design_recommendation": {
+    "class_weighting": "Defer class-weighted cross-entropy until a baseline demonstrates need; class frequencies are recorded from training labels only.",
+    "initial_loss": "Dice plus unweighted cross-entropy"
+  },
+  "normalization_options_compared": [
+    {
+      "assessment": "Simple and leakage-safe but leaves extreme bright tails untouched.",
+      "option": "per_volume_nonzero_zscore"
+    },
+    {
+      "assessment": "Recommended conservative baseline; clipping percentiles are fixed in this proposal and justified from training audit.",
+      "option": "percentile_clipping_plus_per_volume_zscore"
+    },
+    {
+      "assessment": "Possible but less robust to per-scan intensity scale variation; requires persisted train-only fitted parameters.",
+      "option": "training_set_global_normalization"
+    }
+  ],
+  "normalization_recommendation": {
+    "clip_percentiles": [
+      0.5,
+      99.5
+    ],
+    "fit_scope": "per volume independently using MRI nonzero voxels only",
+    "method": "per_volume_nonzero_percentile_clip_then_zscore",
+    "rationale": "Reproducible for unseen images, uses MRI intensities only, avoids validation/test-derived global fitted parameters, and limits extreme tails before z-scoring.",
+    "training_set_evidence_only": {
+      "train_nonzero_mean_median": 1011.2500683334035,
+      "train_nonzero_p0_5_max": 2763.8243310546873,
+      "train_nonzero_p0_5_median": 6.0,
+      "train_nonzero_p0_5_min": 1.0,
+      "train_nonzero_p99_5_max": 1146211.0375,
+      "train_nonzero_p99_5_median": 1740.5,
+      "train_nonzero_p99_5_min": 111.0,
+      "train_nonzero_std_median": 452.16317215301996
+    },
+    "validation_test_use": "descriptive audit only; no fitted global parameters derived from validation/test"
+  },
+  "patch_memory_estimates": [
+    {
+      "coverage_fraction_of_full_volume": 0.036302844247193475,
+      "label_uint8_mib": 0.25,
+      "logits_63class_float32_mib": 63.0,
+      "mri_float32_mib": 1.0,
+      "patch_size": "64x64x64",
+      "voxels": 262144
+    },
+    {
+      "coverage_fraction_of_full_volume": 0.12252209933427798,
+      "label_uint8_mib": 0.84375,
+      "logits_63class_float32_mib": 212.625,
+      "mri_float32_mib": 3.375,
+      "patch_size": "96x96x96",
+      "voxels": 884736
+    },
+    {
+      "coverage_fraction_of_full_volume": 0.2904227539775478,
+      "label_uint8_mib": 2.0,
+      "logits_63class_float32_mib": 504.0,
+      "mri_float32_mib": 8.0,
+      "patch_size": "128x128x128",
+      "voxels": 2097152
+    }
+  ],
+  "preprocessing_contract": {
+    "input": [
+      "accepted MNI152 MRI path",
+      "accepted matching manual DKT31 label path",
+      "frozen split assignment",
+      "approved class mapping"
+    ],
+    "proposed_training_output": [
+      "normalized MRI array",
+      "contiguous integer label array",
+      "original affine and metadata",
+      "reversible crop/padding metadata if applicable",
+      "canonical pair and participant-group identifiers"
+    ]
+  },
+  "proposal_status": "pending_human_approval",
+  "record_counts_by_split": {
+    "test": 16,
+    "train": 70,
+    "validation": 15
+  },
+  "sampling_policy_recommendation": {
+    "initial_policy": "foreground_biased_patch_sampling_on_training_labels_with_mri_context_and_uniform_background_fraction",
+    "leakage_note": "Training labels may guide training patch sampling, but validation/test preprocessing and inference must not require labels. Sampling policy must be disabled for deterministic validation/test full-volume or sliding-window inference."
+  },
+  "spatial_strategy_recommendation": {
+    "crop_policy": "No label-derived crop for baseline deterministic preprocessing. MRI-derived crop/pad may be revisited if implemented reversibly and reproducibly for unseen MRI.",
+    "deterministic_preprocessing": "retain_full_182x218x182_geometry; no resampling or reorientation",
+    "rationale": "Better anatomical context than 64^3 with materially lower logits/activation memory than 128^3; full-volume geometry remains reconstructable.",
+    "recommended_patch_size": "96x96x96",
+    "training_strategy": "patch_based_sampling_from_full_volume"
+  },
+  "split_version": "phase1b-1.0-seed20260831-participant_group_id-approved-20260920",
+  "storage_estimates": {
+    "all_101_float32_mri_gib": 2.7169444859027863,
+    "all_101_int16_label_gib": 1.3584722429513931,
+    "all_101_uint8_label_gib": 0.6792361214756966,
+    "compressed_storage_note": "NIfTI gzip/NPZ/Zarr compression depends on values and chunking; source .nii.gz files are already compressed.",
+    "single_float32_mri_bytes": 28884128,
+    "single_int16_label_bytes": 14442064,
+    "single_uint8_label_bytes": 7221032
+  },
+  "unresolved_cautions": [
+    "licensing reconciliation",
+    "Dataverse v2 versus OSF v3 equivalence",
+    "NKI session and acquisition uncertainties",
+    "exact acquisition relationship for the shared NKI participants",
+    "OASIS-2/OASIS-3 row-level overlap",
+    "historical label-notice product scope"
+  ]
+}

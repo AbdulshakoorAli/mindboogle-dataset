@@ -1,0 +1,188 @@
+{
+  "augmentation_seed": "phase1b-augmentation-proposal-seed-20260922",
+  "configuration_version": "phase1b-augmentation-proposal-v1",
+  "future_required_tests": [
+    "deterministic repetition",
+    "epoch-dependent variation",
+    "worker independence",
+    "MRI-label spatial alignment",
+    "label-value preservation",
+    "shape preservation",
+    "dtype preservation",
+    "no input mutation",
+    "train-only enforcement",
+    "validation/test rejection",
+    "left/right semantic protection"
+  ],
+  "input_artifact_hashes": {
+    "PROJECT_STATE.md": "eba0d00e5fed23d9129e9dd0f9c8a3f5de5293d02d4b3bf3f5091e2e863fe16a",
+    "data/derived/config/mindboggle101_patch_sampling_config.json": "51f89ff6cafb4b00907b7d4ca358f0179605199bbdfd1450d57dfe544f321b91",
+    "data/derived/config/mindboggle101_preprocessing_config.json": "a23630fc007abbbf3e91437fe12dac398a59f8e1417a8d303264d4b027b67506",
+    "data/derived/dictionaries/dkt_training_class_mapping_proposal.csv": "77298b98af0d9d2bc03fee63c1d67e8ee69acbf5c2f41ebd872fa221c6b4671c",
+    "data/derived/qc/mindboggle101_training_class_frequency.csv": "136876438e6ec0ca2d9aee00a156150b503cd10c544be2cdd6bd91992f9344de",
+    "reports/phase1b/mindboggle101_modeling_design_proposal.md": "30d759fe7bc54f61049d8f311325bc15c9af44b8387e1cdeae6fdeaecf610a30",
+    "reports/phase1b/mindboggle101_patch_sampler_report.md": "557b22fca6e59755ca1450ffe8f34097dd135d7bca8922e19da01bcb4c1f8035",
+    "reports/phase1b/mindboggle101_preprocessing_implementation_report.md": "7a133882f591ff25700a12c11b123c70ca5071fb85b97a6207861a39455b89da",
+    "src/brain_segmentation/patch_sampling.py": "a119dfa6afcbb41b5465660a68c21a316ec725f2d0b54ddda4bc433c4212a18a",
+    "src/brain_segmentation/preprocessing.py": "d096a34e241c6c668614e8c78df123f172ac39e24c36702d26efc36d5a690b52",
+    "src/brain_segmentation/training_data.py": "7edbc5088c1769437083fcc4cc9aa7329d0789d0df165ece284b910345b89f32"
+  },
+  "pipeline_position": "after deterministic patch sampler and before tensor conversion",
+  "recommended_intensity_augmentations": [
+    {
+      "applies_to": "MRI only",
+      "name": "gaussian_noise",
+      "parameters": {
+        "std_normalized_units": [
+          0.01,
+          0.05
+        ]
+      },
+      "probability": 0.15
+    },
+    {
+      "applies_to": "MRI only",
+      "name": "gaussian_smoothing",
+      "parameters": {
+        "sigma_voxels": [
+          0.5,
+          1.0
+        ]
+      },
+      "probability": 0.1
+    },
+    {
+      "applies_to": "MRI only",
+      "name": "gamma_contrast",
+      "parameters": {
+        "gamma": [
+          0.9,
+          1.1
+        ]
+      },
+      "probability": 0.15
+    },
+    {
+      "applies_to": "MRI only",
+      "name": "intensity_scale_shift",
+      "parameters": {
+        "scale": [
+          0.9,
+          1.1
+        ],
+        "shift": [
+          -0.1,
+          0.1
+        ]
+      },
+      "probability": 0.2
+    },
+    {
+      "applies_to": "MRI only",
+      "name": "low_frequency_bias_field",
+      "parameters": {
+        "coefficient_range": [
+          -0.1,
+          0.1
+        ],
+        "low_order_polynomial_degree": 3
+      },
+      "probability": 0.1
+    }
+  ],
+  "recommended_spatial_augmentations": [
+    {
+      "enabled": true,
+      "name": "small_rotation",
+      "parameters": {
+        "degrees_per_axis": [
+          -5,
+          5
+        ]
+      },
+      "probability": 0.15
+    },
+    {
+      "enabled": true,
+      "name": "small_translation",
+      "parameters": {
+        "voxels_per_axis": [
+          -4,
+          4
+        ]
+      },
+      "probability": 0.15
+    },
+    {
+      "enabled": true,
+      "name": "small_scaling",
+      "parameters": {
+        "scale_factor": [
+          0.95,
+          1.05
+        ]
+      },
+      "probability": 0.1
+    },
+    {
+      "enabled": false,
+      "name": "elastic_deformation",
+      "probability": 0.0,
+      "reason": "deferred for first baseline"
+    },
+    {
+      "enabled": false,
+      "name": "axis_flips",
+      "probability": 0.0,
+      "reason": "unsafe by default for hemisphere-coded DKT IDs"
+    },
+    {
+      "enabled": false,
+      "name": "left_right_flip",
+      "probability": 0.0,
+      "reason": "requires verified atomic left/right DKT label-ID swap mapping"
+    }
+  ],
+  "scope": {
+    "allowed_split": "train",
+    "test_augmentation": "disabled",
+    "validation_augmentation": "disabled"
+  },
+  "seed_derivation": {
+    "excluded_components": [
+      "DataLoader worker ID",
+      "process ID",
+      "thread ID",
+      "execution order",
+      "process scheduling",
+      "wall-clock time",
+      "Python hash()",
+      "global NumPy random state"
+    ],
+    "hash_algorithm": "SHA-256",
+    "semantic_components": [
+      "augmentation configuration version",
+      "augmentation seed",
+      "epoch",
+      "canonical_pair_id",
+      "participant_group_id",
+      "global sample index",
+      "group-local patch index",
+      "sampling strategy",
+      "selected class when applicable",
+      "augmentation operation name"
+    ]
+  },
+  "spatial_transform_rules": {
+    "label_interpolation": "nearest_neighbor",
+    "label_preservation": "categorical classes 0-62 only",
+    "mri_interpolation": "continuous/trilinear",
+    "output_shape": [
+      96,
+      96,
+      96
+    ],
+    "same_transform_for_mri_and_label": true
+  },
+  "status": "proposal_only_not_implemented"
+}

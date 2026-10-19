@@ -1,0 +1,134 @@
+{
+  "allowed_split": "train",
+  "base_augmentation_seed": "phase1b-augmentation-approved-seed-20260922",
+  "configuration_version": "phase1b-training-augmentation-v1",
+  "default_behavior": "augmentation disabled unless explicitly enabled for training",
+  "disabled_operations": {
+    "elastic_deformation": "not implemented for the initial baseline",
+    "left_right_flip": "disabled because DKT classes encode hemisphere and no verified atomic left/right label-ID swap is approved",
+    "validation_augmentation": "rejected",
+    "test_augmentation": "rejected"
+  },
+  "input_patch_shape": [
+    96,
+    96,
+    96
+  ],
+  "intensity_transforms": {
+    "gamma_contrast": {
+      "applies_to": "MRI only",
+      "gamma": [
+        0.7,
+        1.5
+      ],
+      "probability": 0.15
+    },
+    "gaussian_noise": {
+      "applies_to": "MRI only",
+      "std": [
+        0.0,
+        0.05
+      ],
+      "probability": 0.15
+    },
+    "intensity_scale": {
+      "applies_to": "MRI only",
+      "scale": [
+        0.9,
+        1.1
+      ],
+      "probability": 0.15
+    },
+    "intensity_shift": {
+      "applies_to": "MRI only",
+      "shift": [
+        -0.1,
+        0.1
+      ],
+      "probability": 0.15
+    },
+    "low_frequency_bias": {
+      "applies_to": "MRI only",
+      "coefficient": [
+        -0.05,
+        0.05
+      ],
+      "field": "quadratic low-frequency field",
+      "probability": 0.1
+    }
+  },
+  "label_rules": {
+    "allowed_classes": "0-62",
+    "interpolation": "nearest-neighbor for spatial transforms",
+    "remapping": "none"
+  },
+  "mri_rules": {
+    "dtype": "float32",
+    "interpolation": "continuous/linear for spatial transforms"
+  },
+  "output_patch_shape": [
+    96,
+    96,
+    96
+  ],
+  "seed_derivation": {
+    "allowed_components": [
+      "augmentation configuration version",
+      "base augmentation seed",
+      "epoch",
+      "participant_group_id",
+      "canonical_pair_id",
+      "patch index",
+      "augmentation stage name"
+    ],
+    "excluded_components": [
+      "worker ID",
+      "process ID",
+      "thread ID",
+      "filesystem order",
+      "CSV order",
+      "Python hash()",
+      "global NumPy random state",
+      "wall clock time"
+    ],
+    "hash_algorithm": "SHA-256"
+  },
+  "spatial_transforms": {
+    "small_rotation": {
+      "applies_to": "MRI and label with matched transform",
+      "degrees": [
+        -10.0,
+        10.0
+      ],
+      "probability": 0.15
+    },
+    "small_scaling": {
+      "applies_to": "MRI and label with matched transform",
+      "scale": [
+        0.95,
+        1.05
+      ],
+      "probability": 0.1
+    },
+    "small_translation": {
+      "applies_to": "MRI and label with matched transform",
+      "probability": 0.1,
+      "voxels": [
+        -5.0,
+        5.0
+      ]
+    }
+  },
+  "status": "approved_implemented",
+  "tensor_adapter": {
+    "configuration_version": "phase1b-tensor-adapter-v1",
+    "label_tensor_dtype": "torch.int64",
+    "mri_tensor_dtype": "torch.float32",
+    "mri_tensor_shape": [
+      1,
+      96,
+      96,
+      96
+    ]
+  }
+}

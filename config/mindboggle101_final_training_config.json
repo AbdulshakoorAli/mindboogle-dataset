@@ -1,0 +1,151 @@
+{
+  "schema_version": "phase1b-stage6a-final-training-config-v1",
+  "status": "prepared_not_executed",
+  "created_date": "2026-09-23",
+  "experiment": {
+    "name": "mindboggle101_3d_unet_baseline_v1",
+    "purpose": "Reproducible baseline segmentation experiment specification for the thesis; full training is not started by this configuration.",
+    "phase": "Phase 1B",
+    "stage": "Stage 6A"
+  },
+  "dataset": {
+    "name": "Mindboggle-101",
+    "task": "T1 MRI -> manual DKT31 cortical segmentation",
+    "input": "skull-stripped MNI152 T1-weighted brain MRI",
+    "target": "matching manual DKT31 reference segmentation",
+    "coordinate_space": "MNI152",
+    "classes": {
+      "total": 63,
+      "background_class": 0,
+      "foreground_regions": 62,
+      "mapping_artifact": "data/derived/dictionaries/dkt_training_class_mapping_proposal.csv",
+      "mapping_policy": "original DKT IDs map reversibly to contiguous classes 0-62 during training; predictions must map back to original DKT IDs for evaluation/visualization"
+    },
+    "split": {
+      "split_version": "phase1b-1.0-seed20260831-participant_group_id-approved-20260920",
+      "split_config": "data/derived/splits/mindboggle101_split_config.json",
+      "seed": "20260831",
+      "grouping_key": "participant_group_id",
+      "participant_grouping_rule": "All subject/acquisition records sharing a participant_group_id remain in one split; native and MNI152 representations remain together, with MNI152 eligible for training.",
+      "test_set_frozen": true,
+      "test_policy": "Frozen test set is evaluated once only after final model/checkpoint selection; no test voxel data may be accessed during training preparation or model selection."
+    }
+  },
+  "model": {
+    "configuration_artifact": "data/derived/config/mindboggle101_model_config.json",
+    "architecture": "MONAI 3D U-Net",
+    "input_channels": 1,
+    "output_channels": 63,
+    "feature_channels": [16, 32, 64, 128],
+    "normalization": "InstanceNorm3d affine=True",
+    "activation": "LeakyReLU negative_slope=0.01",
+    "dropout": 0.0,
+    "pretrained": false,
+    "parameter_count": 759671,
+    "trainable_parameter_count": 759671
+  },
+  "loss": {
+    "configuration_artifact": "data/derived/config/mindboggle101_loss_config.json",
+    "name": "foreground_soft_dice_plus_unweighted_cross_entropy",
+    "dice": {
+      "include_background": false,
+      "softmax": true,
+      "to_onehot_y": true,
+      "reduction": "mean"
+    },
+    "cross_entropy": {
+      "include_background": true,
+      "class_weighting": "none",
+      "reduction": "mean"
+    }
+  },
+  "training": {
+    "optimizer": "AdamW",
+    "learning_rate": 0.001,
+    "weight_decay": 0.00001,
+    "batch_size": 1,
+    "recommended_epochs": 100,
+    "future_epoch_override_allowed": true,
+    "scheduler": "none for initial baseline unless separately approved",
+    "early_stopping": "not enabled by default; checkpoint selection uses validation metric policy",
+    "mixed_precision": {
+      "enabled_by_default": false,
+      "reason": "disabled until approved GPU environment verification",
+      "future_override_allowed_after_gpu_smoke_test": true
+    },
+    "device_policy": "CPU can run smoke tests; full training should use an approved NVIDIA GPU environment after Stage 6B decision.",
+    "experiment_seed": "phase1b-final-baseline-seed-20260923",
+    "determinism_policy": "Use stable SHA-256 semantic seeds and torch deterministic settings where supported; do not use Python hash, filesystem order, worker ID, process ID, wall-clock time, or validation/test information for stochastic decisions."
+  },
+  "patch_sampling": {
+    "configuration_artifact": "data/derived/config/mindboggle101_patch_sampling_config.json",
+    "patch_size": [96, 96, 96],
+    "sampler": "approved deterministic lazy patch sampler",
+    "samples_per_epoch": 552,
+    "patches_per_participant_group": 8,
+    "training_sampling": {
+      "foreground": 276,
+      "class_aware": 166,
+      "random_context": 110
+    },
+    "boundary_policy": "constrained full in-volume patches; no padding"
+  },
+  "augmentation": {
+    "configuration_artifact": "data/derived/config/mindboggle101_augmentation_config.json",
+    "enabled": "training only",
+    "default_in_code": "disabled unless explicitly enabled for training",
+    "final_training_policy": "enable approved training-only augmentation for final baseline unless Stage 6B explicitly decides otherwise",
+    "disabled_operations": {
+      "left_right_flip": "disabled because DKT classes encode hemisphere and no atomic label-ID swap is approved",
+      "elastic_deformation": "disabled/not implemented for initial baseline",
+      "validation_augmentation": "rejected",
+      "test_augmentation": "rejected"
+    },
+    "intensity_transforms": {
+      "gaussian_noise": {"probability": 0.15, "std": [0.0, 0.05]},
+      "intensity_scale": {"probability": 0.15, "scale": [0.9, 1.1]},
+      "intensity_shift": {"probability": 0.15, "shift": [-0.1, 0.1]},
+      "gamma_contrast": {"probability": 0.15, "gamma": [0.7, 1.5]},
+      "low_frequency_bias": {"probability": 0.10, "coefficient": [-0.05, 0.05]}
+    },
+    "spatial_transforms": {
+      "small_rotation": {"probability": 0.15, "degrees": [-10.0, 10.0]},
+      "small_translation": {"probability": 0.10, "voxels": [-5.0, 5.0]},
+      "small_scaling": {"probability": 0.10, "scale": [0.95, 1.05]}
+    }
+  },
+  "checkpoint_policy_reference": "reports/phase1b/mindboggle101_checkpoint_policy.md",
+  "metric_policy_reference": "reports/phase1b/mindboggle101_metric_protocol.md",
+  "experiment_directory_proposal": {
+    "root": "data/derived/experiments/mindboggle101_3d_unet_baseline_v1",
+    "subdirectories": {
+      "config": "configuration snapshots and hashes",
+      "logs": "training logs and environment records",
+      "checkpoints": "latest and best-validation checkpoints when full training is separately authorized",
+      "metrics": "training/validation metrics and final test metrics after approved final evaluation",
+      "predictions": "validation/test prediction outputs only when inference is separately authorized"
+    },
+    "stage6a_created_prediction_files": false,
+    "stage6a_created_checkpoint_files": false
+  },
+  "prohibited_until_separate_authorization": [
+    "final training",
+    "validation inference",
+    "frozen test voxel access",
+    "test metrics",
+    "final predictions",
+    "checkpoint selection using test performance",
+    "dataset split changes",
+    "preprocessing changes",
+    "model architecture changes",
+    "viewer changes"
+  ],
+  "unresolved_constraints": [
+    "licensing reconciliation",
+    "Dataverse v2 versus OSF v3 equivalence",
+    "NKI session/acquisition uncertainties",
+    "OASIS external overlap uncertainty",
+    "historical label-notice scope",
+    "no clinical-validity claim"
+  ]
+}

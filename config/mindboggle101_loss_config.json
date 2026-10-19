@@ -1,0 +1,19 @@
+{
+  "background_policy": "Dice excludes background to emphasize foreground DKT regions; cross entropy includes background across all 63 classes.",
+  "configuration_version": "phase1b-dice-ce-loss-v1",
+  "cross_entropy_configuration": {
+    "class_weighting": "none",
+    "implementation": "torch.nn.CrossEntropyLoss",
+    "include_background": true,
+    "reduction": "mean"
+  },
+  "dice_configuration": {
+    "implementation": "MONAI DiceLoss",
+    "include_background": false,
+    "reduction": "mean",
+    "softmax": true,
+    "to_onehot_y": true
+  },
+  "loss_name": "foreground_soft_dice_plus_unweighted_cross_entropy",
+  "num_classes": 63
+}

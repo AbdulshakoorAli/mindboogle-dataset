@@ -1,0 +1,105 @@
+{
+  "analysis_scope": "training labels only; frozen test voxel arrays not accessed",
+  "augmentation_boundary": "future augmentation operates after deterministic patch extraction and before tensor conversion while preserving MRI-label correspondence",
+  "base_sampler_seed_proposal": "phase1b-patch-sampler-proposal-seed-20260922",
+  "boundary_policy": {
+    "if_padding_is_required": "MRI padding 0 after normalization; label padding background class 0; crop/reconstruct with exact MRI-label correspondence",
+    "training": "constrain centers to full in-volume patches initially; no training padding for the baseline sampler"
+  },
+  "candidate_patch_sizes": [
+    [
+      64,
+      64,
+      64
+    ],
+    [
+      96,
+      96,
+      96
+    ],
+    [
+      128,
+      128,
+      128
+    ]
+  ],
+  "class_aware_weighting": {
+    "clip_range": [
+      0.5,
+      5.0
+    ],
+    "eligible_classes": "documented foreground classes 1-62 only",
+    "renormalize": true,
+    "unknown_label_policy": "fail closed; never sample unknown IDs",
+    "weight_formula": "sqrt(total_foreground_voxels / max(class_voxel_count, 1))"
+  },
+  "created_date": "2026-09-22",
+  "epoch_definition": {
+    "multi_record_group_policy": "group first; record second uniformly within group",
+    "patches_per_participant_group": 8,
+    "samples_per_epoch": 552
+  },
+  "even_patch_bounds": {
+    "end_exclusive": "start + patch_size",
+    "start": "center - patch_size//2",
+    "valid_center_range_inclusive": "[patch_size//2, dim - (patch_size - patch_size//2)]"
+  },
+  "input_shape": [
+    182,
+    218,
+    182
+  ],
+  "materialization_recommendation": "lazy patch generation first; no patch arrays/caches for the initial implementation",
+  "orientation": "LAS",
+  "participant_group_balancing": {
+    "multi_record_training_groups": {
+      "NKI-Rockland-3808535": [
+        "MB101:NKI-RS-22:NKI-RS-22-14:MNI152:brain-DKT31",
+        "MB101:NKI-TRT-20:NKI-TRT-20-14:MNI152:brain-DKT31"
+      ]
+    },
+    "policy": "select participant_group_id uniformly first, then one training record in that group, then patch strategy and center",
+    "training_groups": 69,
+    "training_records": 70
+  },
+  "proposal_version": "phase1b-patch-sampling-design-v1",
+  "recommended_patch_size": [
+    96,
+    96,
+    96
+  ],
+  "sampling_mixture_proposal": {
+    "class_aware": 0.3,
+    "random_context": 0.2,
+    "segmentation_foreground": 0.5
+  },
+  "spacing_mm": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "test_inference": "identical to validation, run only after model selection is complete",
+  "training_space": "MNI152",
+  "validation_inference": {
+    "blending": "Gaussian logit blending if available; otherwise average logits",
+    "grid_policy": "regular grid plus final boundary-flush windows",
+    "mode": "deterministic full-volume sliding-window",
+    "output_shape": [
+      182,
+      218,
+      182
+    ],
+    "overlap": 0.5,
+    "random_validation_patches": false,
+    "stride": [
+      48,
+      48,
+      48
+    ],
+    "window_size": [
+      96,
+      96,
+      96
+    ]
+  }
+}

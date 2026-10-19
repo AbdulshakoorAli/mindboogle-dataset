@@ -1,0 +1,200 @@
+{
+  "approved_data": {
+    "frozen_test_records": 16,
+    "input_channels": 1,
+    "output_classes": 63,
+    "patch_size": [
+      96,
+      96,
+      96
+    ],
+    "training_participant_groups": 69,
+    "training_records": 70,
+    "training_space": "MNI152",
+    "validation_records": 15
+  },
+  "baseline_architecture": {
+    "activation": "LeakyReLU or PReLU",
+    "channels": [
+      16,
+      32,
+      64,
+      128
+    ],
+    "downsampling": "strided convolution / U-Net encoder strides",
+    "dropout": "0.0 initially; consider <=0.1 only after overfitting evidence",
+    "family": "small 3D U-Net",
+    "implementation_preference": "MONAI UNet or transparent project wrapper around MONAI modules",
+    "in_channels": 1,
+    "input_shape": [
+      1,
+      96,
+      96,
+      96
+    ],
+    "normalization": "InstanceNorm3d",
+    "num_resolution_levels": 4,
+    "out_channels": 63,
+    "output_shape": [
+      63,
+      96,
+      96,
+      96
+    ],
+    "parameter_count_estimate": "approximately 5-10 million parameters; confirm after implementation",
+    "spatial_dims": 3,
+    "strides": [
+      2,
+      2,
+      2
+    ],
+    "upsampling": "transposed convolution or MONAI U-Net decoder upsampling",
+    "weight_initialization": "Kaiming-compatible framework default or explicit Kaiming normal"
+  },
+  "configuration_version": "phase1b-baseline-training-proposal-v1",
+  "environment_inspection": {
+    "cpu": "11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz; 4 cores / 8 logical processors",
+    "gpu_hardware_detected": [
+      "Intel(R) Iris(R) Xe Graphics"
+    ],
+    "inspection_date": "2026-09-22",
+    "installed_packages_observed": {
+      "cuda-python": "not installed",
+      "matplotlib": "3.10.7",
+      "monai": "not installed",
+      "nibabel": "5.4.2",
+      "nnunet": "not installed",
+      "nnunetv2": "not installed",
+      "numpy": "2.5.2",
+      "pandas": "3.0.5",
+      "plotly": "7.0.0",
+      "pytest": "9.1.1",
+      "scikit-image": "0.26.0",
+      "scipy": "1.18.1",
+      "streamlit": "1.62.0",
+      "torch": "not installed"
+    },
+    "nvidia_gpu_detected": false,
+    "nvidia_smi": "not found",
+    "operating_system": "Microsoft Windows 11 Pro 10.0.26200",
+    "project_drive_free_gib": 221.37,
+    "python_version": "3.12.10",
+    "system_ram_gib": 31.73
+  },
+  "fallback_framework": "reduced 2D or 2.5D PyTorch baseline if GPU memory is insufficient",
+  "frozen_test_policy": "test set remains inaccessible until model/checkpoint selection is complete",
+  "input_artifact_hashes": {
+    "PROJECT_STATE.md": "eba0d00e5fed23d9129e9dd0f9c8a3f5de5293d02d4b3bf3f5091e2e863fe16a",
+    "data/derived/config/mindboggle101_patch_sampling_config.json": "51f89ff6cafb4b00907b7d4ca358f0179605199bbdfd1450d57dfe544f321b91",
+    "data/derived/config/mindboggle101_preprocessing_config.json": "a23630fc007abbbf3e91437fe12dac398a59f8e1417a8d303264d4b027b67506",
+    "data/derived/dictionaries/dkt_training_class_mapping_proposal.csv": "77298b98af0d9d2bc03fee63c1d67e8ee69acbf5c2f41ebd872fa221c6b4671c",
+    "data/derived/qc/mindboggle101_training_class_frequency.csv": "136876438e6ec0ca2d9aee00a156150b503cd10c544be2cdd6bd91992f9344de",
+    "reports/phase1b/mindboggle101_modeling_design_proposal.md": "30d759fe7bc54f61049d8f311325bc15c9af44b8387e1cdeae6fdeaecf610a30",
+    "reports/phase1b/mindboggle101_patch_sampler_report.md": "557b22fca6e59755ca1450ffe8f34097dd135d7bca8922e19da01bcb4c1f8035",
+    "reports/phase1b/mindboggle101_preprocessing_implementation_report.md": "7a133882f591ff25700a12c11b123c70ca5071fb85b97a6207861a39455b89da",
+    "src/brain_segmentation/patch_sampling.py": "a119dfa6afcbb41b5465660a68c21a316ec725f2d0b54ddda4bc433c4212a18a",
+    "src/brain_segmentation/preprocessing.py": "d096a34e241c6c668614e8c78df123f172ac39e24c36702d26efc36d5a690b52",
+    "src/brain_segmentation/training_data.py": "7edbc5088c1769437083fcc4cc9aa7329d0789d0df165ece284b910345b89f32"
+  },
+  "loss_and_optimization": {
+    "batch_size": "start 1; try 2 only if GPU memory permits",
+    "checkpoint_selection_metric": "best validation macro foreground Dice; never test performance",
+    "dice_background_for_optimization": "exclude background from Dice term; report background separately",
+    "early_stopping": "patience 30 validation evaluations",
+    "gradient_accumulation": "2-4 steps if needed",
+    "gradient_clipping": "global norm 1.0",
+    "initial_learning_rate": 0.001,
+    "loss": "multiclass soft Dice + unweighted cross-entropy",
+    "lr_schedule": "ReduceLROnPlateau on validation macro foreground Dice or conservative cosine schedule after smoke testing",
+    "maximum_epochs": 300,
+    "mixed_precision": "enabled on CUDA after smoke test; disabled on CPU",
+    "optimizer": "AdamW",
+    "weight_decay": 1e-05
+  },
+  "official_sources": [
+    {
+      "access_date": "2026-09-22",
+      "topic": "PyTorch local install and support matrix",
+      "url": "https://docs.pytorch.org/get-started/locally/",
+      "used_for": "Python support, Windows support, CUDA/CPU choices, CUDA availability verification."
+    },
+    {
+      "access_date": "2026-09-22",
+      "topic": "PyTorch previous versions",
+      "url": "https://docs.pytorch.org/get-started/previous-versions/",
+      "used_for": "Pinned PyTorch 2.6.0 CUDA 12.4 and CPU wheel availability."
+    },
+    {
+      "access_date": "2026-09-22",
+      "topic": "MONAI 1.4.0 installation guide",
+      "url": "https://monai.readthedocs.io/en/1.4.0/installation.html",
+      "used_for": "MONAI relationship to PyTorch/CUDA and optional imaging extras."
+    },
+    {
+      "access_date": "2026-09-22",
+      "topic": "NVIDIA CUDA 12.4 release notes",
+      "url": "https://docs.nvidia.com/cuda/archive/12.4.0/cuda-toolkit-release-notes/",
+      "used_for": "CUDA 12.4 Windows driver minimum."
+    },
+    {
+      "access_date": "2026-09-22",
+      "topic": "Python version status",
+      "url": "https://devguide.python.org/versions/",
+      "used_for": "Python 3.12 lifecycle/status."
+    },
+    {
+      "access_date": "2026-09-22",
+      "topic": "NiBabel installation",
+      "url": "https://nipy.org/nibabel/installation.html",
+      "used_for": "Official NiBabel package source context."
+    },
+    {
+      "access_date": "2026-09-22",
+      "topic": "NumPy releases/news",
+      "url": "https://numpy.org/news/",
+      "used_for": "NumPy 2.x Python-version support context."
+    }
+  ],
+  "primary_framework": "PyTorch + MONAI 3D U-Net components",
+  "proposed_dependency_versions": {
+    "cuda_build": "cu124 for NVIDIA CUDA training environment; CPU build only for dependency smoke checks",
+    "monai": "1.4.0",
+    "nibabel": "5.3.2",
+    "numpy": "2.1.3",
+    "packaging": "24.2",
+    "pandas": "2.2.3",
+    "python": "3.12.x",
+    "pytorch": "2.6.0",
+    "scikit-image": "0.24.0",
+    "scipy": "1.14.1",
+    "tensorboard": "2.18.0",
+    "torchaudio": "2.6.0",
+    "torchvision": "0.21.0",
+    "tqdm": "4.66.5"
+  },
+  "recommended_execution_environment": {
+    "comfortable_tier": "24-48 GB VRAM",
+    "current_windows_cpu_only_machine": "dependency verification, documentation, and very small CPU shape tests only; not practical for full 3D training",
+    "minimum_gpu_smoke_test_tier": "8-12 GB VRAM for smoke tests at batch size 1; actual feasibility unverified",
+    "preferred": "separate NVIDIA GPU environment, preferably institutional/university GPU or approved local/cloud GPU with CUDA-compatible driver",
+    "preferred_baseline_training_tier": "16-24 GB VRAM for 96^3 patches, 63 logits, AMP, batch size 1-2 or gradient accumulation",
+    "verification_requirement": "memory estimates must be confirmed by a real GPU smoke test"
+  },
+  "separate_training_environment_required": true,
+  "status": "proposal_only_not_implemented",
+  "validation_inference": {
+    "augmentation": "disabled",
+    "blending": "Gaussian when supported, otherwise constant averaging",
+    "output_shape": [
+      182,
+      218,
+      182
+    ],
+    "overlap": 0.5,
+    "window_size": [
+      96,
+      96,
+      96
+    ]
+  }
+}

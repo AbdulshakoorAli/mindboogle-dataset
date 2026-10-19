@@ -1,0 +1,45 @@
+{
+  "approved_coordinate_space": "MNI152",
+  "class_count": 63,
+  "clipping_percentiles": [
+    0.5,
+    99.5
+  ],
+  "configuration_version": "phase1b-mni152-inmemory-preprocessing-v1",
+  "disabled_operations": [
+    "resampling",
+    "reorientation",
+    "cropping",
+    "padding",
+    "patch generation",
+    "augmentation",
+    "materialized normalized volumes",
+    "preprocessing caches",
+    "tensor or DataLoader creation",
+    "model training"
+  ],
+  "expected_geometry": {
+    "orientation": "LAS",
+    "shape": [
+      182,
+      218,
+      182
+    ],
+    "spacing_mm": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "foreground_definition": "MRI voxels with value != 0",
+  "frozen_pair_split_artifact": "data\\derived\\splits\\mindboggle101_pair_splits.csv",
+  "frozen_pair_split_artifact_sha256": "9263804d70e97fc1a956a0fe9df34a8a9fa647ccac975d93887dfad9dc54c8d1",
+  "frozen_split_config": "data\\derived\\splits\\mindboggle101_split_config.json",
+  "frozen_split_config_sha256": "37ec3a960356a8343297610fb30b2efc28ab99efb257211908cef808f3b3ded1",
+  "label_output_dtype": "uint8",
+  "mapping_artifact": "data\\derived\\dictionaries\\dkt_training_class_mapping_proposal.csv",
+  "mapping_artifact_sha256": "77298b98af0d9d2bc03fee63c1d67e8ee69acbf5c2f41ebd872fa221c6b4671c",
+  "mri_output_dtype": "float32",
+  "normalization_method": "per-volume nonzero percentile clipping followed by per-volume nonzero z-score",
+  "source_immutability_rule": "Read source NIfTI files only; never rewrite raw inputs."
+}
