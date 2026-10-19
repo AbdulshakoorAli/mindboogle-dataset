@@ -1,0 +1,10 @@
+proposal_item,recommendation,value,evidence,status
+grouping_key,accept,participant_group_id,"99 unique groups from 101 subject/acquisition records; group size counts {1: 97, 2: 2}",proposal_pending_human_approval
+coordinate_space_for_splitting,use_subject_record_once_then_link_space_rows,"split 101 subject/acquisition records, not 202 scan-space rows",Each subject has one native and one MNI152 row; these are two representations of one acquisition.,proposal_pending_human_approval
+target_counts,accept_approximate,70 train / 15 validation / 16 test subject records,Targets sum to 101; participant groups make exact cohort balance a constrained deterministic allocation problem.,proposal_pending_human_approval
+cohort_balance,stratify_by_cohort_with_group_integrity_first,Extra-18:18; MMRR-21:21; NKI-RS-22:22; NKI-TRT-20:20; OASIS-TRT-20:20,Cohort counts must be approximate because two NKI groups span cohorts.,proposal_pending_human_approval
+shared_cross_cohort_groups,preserve,NKI-Rockland-1427581; NKI-Rockland-3808535,Two confirmed NKI-RS/NKI-TRT participant groups must not cross splits.,proposal_pending_human_approval
+repeat_counterpart_constraints,preserve,99,"Participant-group table records repeat/counterpart constraints for MMRR, NKI, and OASIS lineages.",proposal_pending_human_approval
+seed,accept,20260831,"Existing proposal seed is fixed, documented, and independent of row order when combined with hash tie-breaking.",proposal_pending_human_approval
+tie_breaking,accept,"SHA-256 over dataset version, seed, participant_group_id, and allocation context","Deterministic, auditable, and avoids dependence on CSV ordering.",proposal_pending_human_approval
+frozen_test_policy,accept_after_human_approval,"freeze once, then do not inspect or tune on test labels",Needed for thesis credibility; no split assignment is created in this milestone.,proposal_pending_human_approval
