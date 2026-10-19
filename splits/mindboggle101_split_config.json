@@ -1,0 +1,150 @@
+{
+  "achieved_participant_group_counts": {
+    "test": 16,
+    "train": 69,
+    "validation": 14
+  },
+  "achieved_subject_counts": {
+    "test": 16,
+    "train": 70,
+    "validation": 15
+  },
+  "algorithm_name": "sha256_ordered_group_dp_cohort_balance",
+  "algorithm_version": "1.0",
+  "approved_training_space": "MNI152",
+  "assignment_selection_metadata": {
+    "cohort_targets": {
+      "test": {
+        "Extra-18": 3,
+        "MMRR-21": 3,
+        "NKI-RS-22": 4,
+        "NKI-TRT-20": 3,
+        "OASIS-TRT-20": 3
+      },
+      "train": {
+        "Extra-18": 12,
+        "MMRR-21": 15,
+        "NKI-RS-22": 15,
+        "NKI-TRT-20": 14,
+        "OASIS-TRT-20": 14
+      },
+      "validation": {
+        "Extra-18": 3,
+        "MMRR-21": 3,
+        "NKI-RS-22": 3,
+        "NKI-TRT-20": 3,
+        "OASIS-TRT-20": 3
+      }
+    },
+    "test_selection": {
+      "achieved_cohort_counts": {
+        "Extra-18": 3,
+        "MMRR-21": 3,
+        "NKI-RS-22": 4,
+        "NKI-TRT-20": 3,
+        "OASIS-TRT-20": 3
+      },
+      "cohort_l1_deviation": 0,
+      "cohort_max_deviation": 0,
+      "target_cohort_counts": {
+        "Extra-18": 3,
+        "MMRR-21": 3,
+        "NKI-RS-22": 4,
+        "NKI-TRT-20": 3,
+        "OASIS-TRT-20": 3
+      },
+      "target_subject_count": 16,
+      "tie_break_signature": "02a7f40d5da088204df1da8a0eff03b58c6e29c4a39fa5f81a3dced5b808a631"
+    },
+    "validation_selection": {
+      "achieved_cohort_counts": {
+        "Extra-18": 3,
+        "MMRR-21": 3,
+        "NKI-RS-22": 3,
+        "NKI-TRT-20": 3,
+        "OASIS-TRT-20": 3
+      },
+      "cohort_l1_deviation": 0,
+      "cohort_max_deviation": 0,
+      "target_cohort_counts": {
+        "Extra-18": 3,
+        "MMRR-21": 3,
+        "NKI-RS-22": 3,
+        "NKI-TRT-20": 3,
+        "OASIS-TRT-20": 3
+      },
+      "target_subject_count": 15,
+      "tie_break_signature": "050fd7b70bc6ffb32893fdcf55bda56aeb930edfbeb76cafecd49d172bb8d72a"
+    }
+  },
+  "class_mapping_reference": "data\\derived\\dictionaries\\dkt_training_class_mapping_proposal.csv",
+  "cohort_by_split_matrix": {
+    "test": {
+      "Extra-18": 3,
+      "MMRR-21": 3,
+      "NKI-RS-22": 4,
+      "NKI-TRT-20": 3,
+      "OASIS-TRT-20": 3
+    },
+    "train": {
+      "Extra-18": 12,
+      "MMRR-21": 15,
+      "NKI-RS-22": 15,
+      "NKI-TRT-20": 14,
+      "OASIS-TRT-20": 14
+    },
+    "validation": {
+      "Extra-18": 3,
+      "MMRR-21": 3,
+      "NKI-RS-22": 3,
+      "NKI-TRT-20": 3,
+      "OASIS-TRT-20": 3
+    }
+  },
+  "created_date": "2026-09-20",
+  "deterministic_hash_fields": [
+    "split_version",
+    "seed",
+    "grouping_key",
+    "participant_group_id",
+    "included_subject_ids",
+    "cohorts",
+    "source_participant_ids"
+  ],
+  "grouping_key": "participant_group_id",
+  "input_artifact_hashes": {
+    "data\\derived\\dictionaries\\dkt_training_class_mapping_proposal.csv": "77298b98af0d9d2bc03fee63c1d67e8ee69acbf5c2f41ebd872fa221c6b4671c",
+    "data\\derived\\manifests\\mindboggle101_scan_manifest.csv": "cc6ffbbf27552f5d74691ab32bb65f52e7aedff9ae8e4ac7721628837ceb80e9",
+    "data\\derived\\manifests\\mindboggle101_subject_manifest.csv": "fc4a57c30223e703c943defd6db84f34ef47f056f93694d983547ae554e681b7",
+    "data\\derived\\metadata\\mindboggle101_participant_groups.csv": "5d03782ea4f2928238c4659ed1779cd3fbf8c9232ff678f2774a28aecfc42288",
+    "data\\derived\\metadata\\mindboggle101_split_feasibility_proposal.csv": "3af9ee6b5f300bd457cf3dec8f0cd8aa71561e7ecf435d906659e353cc0a9330",
+    "data\\derived\\qc\\mindboggle101_training_readiness.csv": "38f963cf186f5b887d12cfeb19b54ef81e6b1f14d44671e99f18d94195d1df98",
+    "reports\\phase1b\\mindboggle101_modeling_design_proposal.md": "30d759fe7bc54f61049d8f311325bc15c9af44b8387e1cdeae6fdeaecf610a30"
+  },
+  "native_rows_policy": "Native rows are retained for traceability and viewer consistency; they are not independent training samples in this MNI152-first baseline.",
+  "output_artifact_hashes": {
+    "data\\derived\\qc\\mindboggle101_split_audit.csv": "ef3001a8220224d0c25ab5009f07ffad7b30e83edab50d00953b1100a670fafd",
+    "data\\derived\\qc\\mindboggle101_split_failures.csv": "c337c34d12ca72f9b0b801775927bc61d8ff0130777c4c7288bbdb74d3bf4f49",
+    "data\\derived\\splits\\mindboggle101_pair_splits.csv": "9263804d70e97fc1a956a0fe9df34a8a9fa647ccac975d93887dfad9dc54c8d1",
+    "data\\derived\\splits\\mindboggle101_participant_group_splits.csv": "56adaec9ee86100608b9c7c01be3aaaaa1ae0f81fc239c67a201d75558d79899",
+    "data\\derived\\splits\\mindboggle101_subject_splits.csv": "912dbbd48c269d47cb2795322537f973aebd9e611607e70ee60109d3614f8339"
+  },
+  "seed": "20260831",
+  "split_version": "phase1b-1.0-seed20260831-participant_group_id-approved-20260920",
+  "target_subject_counts": {
+    "test": 16,
+    "train": 70,
+    "validation": 15
+  },
+  "test_set_freeze_policy": "Future changes to test membership require a new split_version and explicit human approval.",
+  "test_set_frozen": true,
+  "tie_breaking_rule": "lexicographic SHA-256 over stable canonical fields; DP subset ties use SHA-256 over sorted participant_group_id values",
+  "unresolved_provenance_cautions": [
+    "licensing reconciliation",
+    "Dataverse v2 versus OSF v3 equivalence",
+    "NKI session and acquisition uncertainties",
+    "exact acquisition relationship for the shared NKI participants",
+    "OASIS-2/OASIS-3 row-level overlap",
+    "historical label-notice product scope"
+  ]
+}
